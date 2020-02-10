@@ -16,7 +16,6 @@ export class PieChartComponent implements OnInit {
   public pieChartData: SingleDataSet = [300, 500, 100];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
-  public pieChartPlugins = [];
 
   constructor() {
     monkeyPatchChartJsTooltip();

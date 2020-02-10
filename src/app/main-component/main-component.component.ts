@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-interface IChartChoices {
-  data?: Array<any>;
-  type: string;
-}
+import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 
 @Component({
   selector: 'app-main-component',
@@ -18,17 +14,33 @@ export class MainComponentComponent implements OnInit {
 
   public chartsList: Array<any> = [];
 
+  public gridsterOptions: GridsterConfig = {
+    draggable: { enabled: true },
+    pushItems: true,
+    resizable: { enabled: true },
+    gridType: 'scrollVertical',
+    maxItemCols: 4
+  };
+  public chartLayout: GridsterItem[] = [];
+
   constructor() { }
 
   ngOnInit() {
   }
 
   public addChart(selectedChart: string): void {
-    let chartData: IChartChoices = {} as IChartChoices;
-    chartData = {
-      type: selectedChart
-    };
-    this.chartsList.push(chartData);
+    this.chartLayout.push({
+      chartType: selectedChart,
+      cols: 3,
+      id: this.generateId(),
+      rows: 1,
+      x: 0,
+      y: this.chartLayout.length
+    });
+  }
+
+  private generateId(): string {
+    return [...Array(7)].map(() => Math.random().toString(36)[2]).join('');
   }
 
 }

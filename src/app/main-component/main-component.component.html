@@ -8,15 +8,17 @@
         </div>
     </div>
     <div id="dashboard-container">
-        <div *ngFor="let chart of chartsList">
-            <ng-container [ngSwitch]="chart.type">
-                <ng-container *ngSwitchCase="'Bar Chart'">
-                    <app-vertical-bar-chart></app-vertical-bar-chart>
+        <gridster [options]="gridsterOptions">
+            <gridster-item *ngFor="let item of chartLayout" [item]="item">
+                <ng-container [ngSwitch]="item.chartType">
+                    <ng-container *ngSwitchCase="'Bar Chart'">
+                        <app-vertical-bar-chart></app-vertical-bar-chart>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Pie Chart'">
+                        <app-pie-chart></app-pie-chart>
+                    </ng-container>
                 </ng-container>
-                <ng-container *ngSwitchCase="'Pie Chart'">
-                    <app-pie-chart></app-pie-chart>
-                </ng-container>
-            </ng-container>
-        </div>
+            </gridster-item>
+        </gridster>
     </div>
 </div>
