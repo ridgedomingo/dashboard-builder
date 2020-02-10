@@ -1,1 +1,8 @@
-@import 'bootstrap/dist/css/bootstrap-grid.min.css';
+// @import 'bootstrap/dist/css/bootstrap-grid.min.css';
+
+.chart-container {
+    border: 1px solid #e6e6e6;
+    height: 360px;
+    width: 360px;
+    padding: 16px;
+}
