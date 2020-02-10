@@ -1,0 +1,22 @@
+<div id="main-container">
+    <div id="toolbox-container">
+
+        <h2>Toolbox</h2>
+        <hr>
+        <div (click)="addChart(choice)" *ngFor="let choice of chartChoices" id="chart-choices">
+            {{ choice }}
+        </div>
+    </div>
+    <div id="dashboard-container">
+        <div *ngFor="let chart of chartsList">
+            <ng-container [ngSwitch]="chart.type">
+                <ng-container *ngSwitchCase="'Bar Chart'">
+                    <app-vertical-bar-chart></app-vertical-bar-chart>
+                </ng-container>
+                <ng-container *ngSwitchCase="'Pie Chart'">
+                    <app-pie-chart></app-pie-chart>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</div>

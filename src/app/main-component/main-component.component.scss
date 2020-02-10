@@ -1,0 +1,25 @@
+#main-container {
+    display: flex;
+    min-height: 100vh;
+
+    #toolbox-container {
+        background: #f4f4f4;
+        height: 100vh;
+        padding: 16px;
+        position: fixed;
+        width: 20%;
+
+        #chart-choices{
+            align-items: center;
+            border-bottom: 0.5px solid rgba(132, 132, 132, 0.5);
+            display: flex;
+            height: 2rem;
+            margin-bottom: 5px;
+        }
+    }
+
+    #dashboard-container {
+        margin-left: 25%;
+        width: 100%;
+    }
+}
