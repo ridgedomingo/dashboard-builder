@@ -1,4 +1,9 @@
-// @import 'bootstrap/dist/css/bootstrap-grid.min.css';
+@import 'bootstrap/dist/css/bootstrap-grid.min.css';
+
+body {
+    background: #eaeaec;
+    margin: 0;
+}
 
 .chart-container {
     align-items: stretch;

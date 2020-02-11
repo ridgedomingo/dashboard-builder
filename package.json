@@ -23,6 +23,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "angular-gridster2": "^9.0.0",
+    "bootstrap": "4.3.1",
     "chart.js": "^2.9.3",
     "ng2-charts": "^2.2.4",
     "rxjs": "~6.4.0",

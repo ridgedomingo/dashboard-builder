@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { faChartBar, faChartPie, faChartLine } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-component',
@@ -7,9 +8,21 @@ import { GridsterConfig, GridsterItem } from 'angular-gridster2';
   styleUrls: ['./main-component.component.scss']
 })
 export class MainComponentComponent implements OnInit {
-  public chartChoices = [
-    'Bar Chart',
-    'Pie Chart',
+  // public chartChoices = [
+  //   'Bar Chart',
+  //   'Pie Chart',
+  // ];
+  public chartChoices: Array<any> = [
+    {
+      icon: faChartBar,
+      type: 'Bar Chart',
+    }, {
+      icon: faChartPie,
+      type: 'Pie Chart'
+    }, {
+      icon: faChartLine,
+      type: 'Line Chart'
+    }
   ];
 
   public chartsList: Array<any> = [];
