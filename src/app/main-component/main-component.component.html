@@ -1,13 +1,15 @@
 <div id="main-container">
     <div id="toolbox-container">
-
         <h2>Toolbox</h2>
         <hr>
-        <div class="row">
+        <div class="row" id="chart-choices-container">
             <div (click)="addChart(choice.type)" *ngFor="let choice of chartChoices" class="col-md-4 chart-choices">
                 <fa-icon [icon]="choice.icon" size="2x"></fa-icon>
                 <span> {{ choice.type }} </span>
             </div>
+        </div>
+        <div *ngIf="currentlySelectedChart">
+            <app-chart-settings-form [chart]="currentlySelectedChart"></app-chart-settings-form>
         </div>
     </div>
     <div id="dashboard-container">

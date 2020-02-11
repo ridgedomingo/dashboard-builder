@@ -1,0 +1,29 @@
+#chart-settings-form-container {
+    margin-top: 15%;
+
+    .row {
+        margin-bottom: 5px;
+    }
+
+    h4 {
+        text-align: center;
+    }
+
+    label {
+        padding-left: 15px;
+    }
+
+    .nav-tabs {
+        border-bottom: 2px solid #98cc65 !important;
+
+        .nav-link.active {
+            color: #f4f4f4;
+            background: #98cc65;
+            border: none !important;
+        }
+
+        a {
+            color: #f4f4f4;
+        }
+    }
+}

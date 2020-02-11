@@ -1,0 +1,24 @@
+<div id="chart-settings-form-container">
+    <h4>{{ chart.chartType }} </h4>
+    <div>
+        <tabset>
+            <tab heading="Data" id="tab1">
+                <form [formGroup]="chartSettingsForm">
+                    <div class="row">
+                        <label for="name">Name:</label>
+                        <div class="input-group input-group-sm col-md-12">
+                            <input class="form-control" id="name" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="data-source">Data Source:</label>
+                        <div class="input-group input-group-sm col-md-12">
+                            <input accept=".csv" class="form-control" id="data-source" style="padding: 2px;" type="file">
+                        </div>
+                    </div>
+                </form>
+            </tab>
+            <tab heading="Style">Style</tab>
+        </tabset>
+    </div>
+</div>

@@ -8,25 +8,22 @@ import { faChartBar, faChartPie, faChartLine } from '@fortawesome/free-solid-svg
   styleUrls: ['./main-component.component.scss']
 })
 export class MainComponentComponent implements OnInit {
-  // public chartChoices = [
-  //   'Bar Chart',
-  //   'Pie Chart',
-  // ];
   public chartChoices: Array<any> = [
     {
       icon: faChartBar,
       type: 'Bar Chart',
-    }, {
+    },
+    {
       icon: faChartPie,
       type: 'Pie Chart'
-    }, {
+    },
+    {
       icon: faChartLine,
       type: 'Line Chart'
-    }
+    },
   ];
 
-  public chartsList: Array<any> = [];
-
+  public chartLayout: GridsterItem[] = [];
   public gridsterOptions: GridsterConfig = {
     draggable: { enabled: true },
     pushItems: true,
@@ -34,7 +31,8 @@ export class MainComponentComponent implements OnInit {
     gridType: 'scrollVertical',
     maxItemCols: 4
   };
-  public chartLayout: GridsterItem[] = [];
+
+  public currentlySelectedChart: any;
 
   constructor() { }
 
@@ -42,14 +40,16 @@ export class MainComponentComponent implements OnInit {
   }
 
   public addChart(selectedChart: string): void {
-    this.chartLayout.push({
+    const chartData = {
       chartType: selectedChart,
       cols: 3,
       id: this.generateId(),
       rows: 1,
       x: 0,
       y: this.chartLayout.length
-    });
+    };
+    this.chartLayout.push(chartData);
+    this.currentlySelectedChart = chartData;
   }
 
   private generateId(): string {

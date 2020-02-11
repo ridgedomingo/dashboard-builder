@@ -10,16 +10,23 @@
         position: fixed;
         width: 20%;
 
-        .chart-choices {
-            align-items: center;
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 5px;
-            justify-content: center;
-            white-space: nowrap;
+        hr { border-color: #f4f4f4; }
 
-            span {
-                margin-top: 3px;
+        #chart-choices-container {
+            max-height: 35%;
+            overflow-y: auto;
+
+            .chart-choices {
+                align-items: center;
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 5px;
+                justify-content: center;
+                white-space: nowrap;
+
+                span {
+                    margin-top: 3px;
+                }
             }
         }
     }
