@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { ChartsModule } from 'ng2-charts';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { VerticalBarChartComponent } from './vertical-bar-chart/vertical-bar-chart.component';
@@ -17,7 +18,8 @@ import { VerticalBarChartComponent } from './vertical-bar-chart/vertical-bar-cha
   ],
   imports: [
     BrowserModule,
-    ChartsModule
+    ChartsModule,
+    FontAwesomeModule,
   ],
   providers: [],
   exports: [
