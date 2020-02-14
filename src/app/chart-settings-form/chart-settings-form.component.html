@@ -1,24 +1,51 @@
 <div id="chart-settings-form-container">
-    <h4>{{ chart.chartType }} </h4>
+    <h4>{{ chartName }} </h4>
     <div>
         <tabset>
             <tab heading="Data" id="tab1">
-                <form [formGroup]="chartSettingsForm">
-                    <div class="row">
-                        <label for="name">Name:</label>
-                        <div class="input-group input-group-sm col-md-12">
-                            <input class="form-control" id="name" type="text">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label for="data-source">Data Source:</label>
-                        <div class="input-group input-group-sm col-md-12">
-                            <input accept=".csv" class="form-control" id="data-source" style="padding: 2px;" type="file">
-                        </div>
-                    </div>
-                </form>
+                <ng-container *ngTemplateOutlet="chartDataForm"></ng-container>
             </tab>
-            <tab heading="Style">Style</tab>
+            <tab heading="Style">
+                <ng-container *ngTemplateOutlet="chartStyleForm"></ng-container>
+            </tab>
         </tabset>
     </div>
 </div>
+
+<ng-template #chartDataForm>
+    <form [formGroup]="chartSettingsForm">
+        <div class="row">
+            <label for="name">Name:</label>
+            <div class="input-group input-group-sm col-md-12">
+                <input class="form-control" id="name" type="text">
+            </div>
+        </div>
+        <div class="row">
+            <label for="data-source">Data Source:</label>
+            <div class="input-group input-group-sm col-md-12">
+                <input accept=".csv" class="form-control" id="data-source" style="padding: 2px;" type="file">
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #chartStyleForm>
+    <form [formGroup]="chartSettingsForm">
+        <div class="row">
+            <label for="name">Data Color:</label>
+            <div class="input-group input-group-sm col-md-12">
+                <select (change)="setSelectedChartSeries($event.target.value)" class="form-control">
+                    <option value="">Datasets</option>
+                    <option *ngFor="let item of chartValues" [value]="stringify(item)">
+                        {{ item.label }}
+                    </option>
+                </select>
+            </div>
+            <div class="input-group input-group-sm col-md-12" style="margin-top: 10px;">
+                <input [(colorPicker)]="colorPickerValue" [cpCancelButton]="true" [cpOKButton]="true"
+                    [cpSaveClickOutside]="false" [cpPosition]="'top'" [value]="colorPickerValue ? colorPickerValue : ''"
+                    [style.background]="colorPickerValue" (colorPickerSelect)="setChartColor($event)"/>
+            </div>
+        </div>
+    </form>
+</ng-template>

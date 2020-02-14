@@ -15,7 +15,7 @@
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
   ],
-  "angularCompilerOptions": {
-    "enableIvy": true
-  }
+  // "angularCompilerOptions": {
+  //   "enableIvy": true
+  // }
 }

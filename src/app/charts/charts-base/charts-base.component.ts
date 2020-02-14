@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 
 import { ChartType, ChartOptions } from 'chart.js';
 import { Color, SingleDataSet, Label } from 'ng2-charts';
@@ -9,10 +9,9 @@ import { Color, SingleDataSet, Label } from 'ng2-charts';
 })
 export class ChartsBaseComponent implements OnInit {
     @Input() set chartValues(data: any) {
-        if (data) {
-            this.setChartValues(data);
-        }
+        if (data) { this.setChartValues(data); }
     }
+    @Output() setSelectedChart: EventEmitter<any> = new EventEmitter();
 
     public chartColor: Color[];
     public chartOptions: ChartOptions = {
@@ -21,6 +20,8 @@ export class ChartsBaseComponent implements OnInit {
     };
     public chartLabels: Label[];
     public chartData: SingleDataSet;
+    public chartDetails: any;
+    public chartId: string;
     public chartType: ChartType;
     public chartLegend: boolean;
 
@@ -33,9 +34,15 @@ export class ChartsBaseComponent implements OnInit {
     public setChartValues(values: any): void {
         this.chartColor = values.chartColor;
         this.chartData = values.chartDataSets;
+        this.chartDetails = values;
+        this.chartId = values.id;
         this.chartLabels = values.chartLabels;
         this.chartLegend = values.chartLegend;
         this.chartType = values.chartType;
+    }
+
+    public onChartClick(): void {
+        this.setSelectedChart.emit(this.chartDetails);
     }
 
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { faChartBar, faChartPie, faChartLine } from '@fortawesome/free-solid-svg-icons';
 
+import * as Constants from '../constants';
+
 @Component({
   selector: 'app-main-component',
   templateUrl: './main-component.component.html',
@@ -12,10 +14,12 @@ export class MainComponentComponent implements OnInit {
     {
       icon: faChartBar,
       type: 'Bar Chart',
+      values: Constants.BAR_CHART_DEFAULT_VALUES
     },
     {
       icon: faChartPie,
-      type: 'Pie Chart'
+      type: 'Pie Chart',
+      values: Constants.PIE_CHART_DEFAULT_VALUES
     },
     {
       icon: faChartLine,
@@ -39,17 +43,27 @@ export class MainComponentComponent implements OnInit {
   ngOnInit() {
   }
 
-  public addChart(selectedChart: string): void {
+  public addChart(selectedChart: any): void {
+    selectedChart.values.id = this.generateId();
     const chartData = {
-      chartType: selectedChart,
+      chartType: selectedChart.type,
+      chartValues: selectedChart.values,
       cols: 3,
-      id: this.generateId(),
       rows: 1,
       x: 0,
       y: this.chartLayout.length
     };
     this.chartLayout.push(chartData);
     this.currentlySelectedChart = chartData;
+  }
+
+  public setSelectedChart(data: any): void {
+    this.currentlySelectedChart = this.chartLayout.find(chart => chart.chartValues.id === data.id);
+  }
+
+  public setUpdatedChartData(data: any): void {
+    const updatedChartIndex = this.chartLayout.findIndex(chart => chart.chartValues.id === data.chartValues.id);
+    this.chartLayout[updatedChartIndex] = Object.assign({}, data);
   }
 
   private generateId(): string {

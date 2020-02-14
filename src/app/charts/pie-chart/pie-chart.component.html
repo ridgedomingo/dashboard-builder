@@ -1,5 +1,5 @@
 <div class="chart-container">
     <canvas baseChart [colors]="chartColor" [data]="chartData" [labels]="chartLabels" [chartType]="chartType"
-        [options]="chartOptions" [legend]="chartLegend">
+        [options]="chartOptions" [legend]="chartLegend" (chartClick)="onChartClick()">
     </canvas>
 </div>

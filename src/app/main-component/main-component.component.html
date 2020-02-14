@@ -3,13 +3,13 @@
         <h2>Toolbox</h2>
         <hr>
         <div class="row" id="chart-choices-container">
-            <div (click)="addChart(choice.type)" *ngFor="let choice of chartChoices" class="col-md-4 chart-choices">
+            <div (click)="addChart(choice)" *ngFor="let choice of chartChoices" class="col-md-4 chart-choices">
                 <fa-icon [icon]="choice.icon" size="2x"></fa-icon>
                 <span> {{ choice.type }} </span>
             </div>
         </div>
         <div *ngIf="currentlySelectedChart">
-            <app-chart-settings-form [chart]="currentlySelectedChart"></app-chart-settings-form>
+            <app-chart-settings-form [chart]="currentlySelectedChart" (updatedChartData)="setUpdatedChartData($event)"></app-chart-settings-form>
         </div>
     </div>
     <div id="dashboard-container">
@@ -17,10 +17,10 @@
             <gridster-item *ngFor="let item of chartLayout" [item]="item">
                 <ng-container [ngSwitch]="item.chartType">
                     <ng-container *ngSwitchCase="'Bar Chart'">
-                        <app-vertical-bar-chart></app-vertical-bar-chart>
+                        <app-vertical-bar-chart [chartValues]="item.chartValues" (setSelectedChart)="setSelectedChart($event)"></app-vertical-bar-chart> 
                     </ng-container>
                     <ng-container *ngSwitchCase="'Pie Chart'">
-                        <app-pie-chart></app-pie-chart>
+                        <app-pie-chart [chartValues]="item.chartValues" (setSelectedChart)="setSelectedChart($event)"></app-pie-chart>
                     </ng-container>
                 </ng-container>
             </gridster-item>
