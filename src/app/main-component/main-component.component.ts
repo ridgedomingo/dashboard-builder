@@ -44,10 +44,10 @@ export class MainComponentComponent implements OnInit {
   }
 
   public addChart(selectedChart: any): void {
-    selectedChart.values.id = this.generateId();
     const chartData = {
       chartType: selectedChart.type,
       chartValues: selectedChart.values,
+      id: this.generateId(),
       cols: 3,
       rows: 1,
       x: 0,
@@ -57,12 +57,12 @@ export class MainComponentComponent implements OnInit {
     this.currentlySelectedChart = chartData;
   }
 
-  public setSelectedChart(data: any): void {
-    this.currentlySelectedChart = this.chartLayout.find(chart => chart.chartValues.id === data.id);
+  public setSelectedChart(chartId: any): void {
+    this.currentlySelectedChart = this.chartLayout.find(chart => chart.id === chartId);
   }
 
   public setUpdatedChartData(data: any): void {
-    const updatedChartIndex = this.chartLayout.findIndex(chart => chart.chartValues.id === data.chartValues.id);
+    const updatedChartIndex = this.chartLayout.findIndex(chart => chart.id === data.id);
     this.chartLayout[updatedChartIndex] = Object.assign({}, data);
   }
 

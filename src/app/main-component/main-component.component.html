@@ -17,10 +17,10 @@
             <gridster-item *ngFor="let item of chartLayout" [item]="item">
                 <ng-container [ngSwitch]="item.chartType">
                     <ng-container *ngSwitchCase="'Bar Chart'">
-                        <app-vertical-bar-chart [chartValues]="item.chartValues" (setSelectedChart)="setSelectedChart($event)"></app-vertical-bar-chart> 
+                        <app-vertical-bar-chart [chartValues]="item.chartValues" [id]="item.id" (setSelectedChartId)="setSelectedChart($event)"></app-vertical-bar-chart> 
                     </ng-container>
                     <ng-container *ngSwitchCase="'Pie Chart'">
-                        <app-pie-chart [chartValues]="item.chartValues" (setSelectedChart)="setSelectedChart($event)"></app-pie-chart>
+                        <app-pie-chart [chartValues]="item.chartValues" [id]="item.id" (setSelectedChartId)="setSelectedChart($event)"></app-pie-chart>
                     </ng-container>
                 </ng-container>
             </gridster-item>

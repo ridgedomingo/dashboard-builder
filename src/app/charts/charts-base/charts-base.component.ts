@@ -11,7 +11,10 @@ export class ChartsBaseComponent implements OnInit {
     @Input() set chartValues(data: any) {
         if (data) { this.setChartValues(data); }
     }
-    @Output() setSelectedChart: EventEmitter<any> = new EventEmitter();
+    @Input() set id(chartId: string) {
+        if (chartId) { this.chartId = chartId; }
+    }
+    @Output() setSelectedChartId: EventEmitter<any> = new EventEmitter();
 
     public chartColor: Color[];
     public chartOptions: ChartOptions = {
@@ -31,18 +34,18 @@ export class ChartsBaseComponent implements OnInit {
     ngOnInit() {
     }
 
-    public setChartValues(values: any): void {
+
+    public onChartClick(data: any): void {
+        this.setSelectedChartId.emit(data.event.target.id);
+    }
+
+    private setChartValues(values: any): void {
         this.chartColor = values.chartColor;
         this.chartData = values.chartDataSets;
         this.chartDetails = values;
-        this.chartId = values.id;
         this.chartLabels = values.chartLabels;
         this.chartLegend = values.chartLegend;
         this.chartType = values.chartType;
-    }
-
-    public onChartClick(): void {
-        this.setSelectedChart.emit(this.chartDetails);
     }
 
 }
