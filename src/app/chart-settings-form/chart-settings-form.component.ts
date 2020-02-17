@@ -1,6 +1,9 @@
 import { Component, EventEmitter, OnInit, Input, ViewEncapsulation, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
+interface ICSVData {
+  [key: string]: string;
+}
 @Component({
   selector: 'app-chart-settings-form',
   templateUrl: './chart-settings-form.component.html',
@@ -25,6 +28,7 @@ export class ChartSettingsFormComponent implements OnInit {
   public stringify = JSON.stringify;
 
   private chartData: any;
+  private csvHeaders: Array<string> = [];
 
   constructor(
     private formBuilder: FormBuilder
@@ -32,6 +36,19 @@ export class ChartSettingsFormComponent implements OnInit {
 
   ngOnInit() {
     this.initializeChartSettingsForms();
+  }
+
+  public fileChangeListener(data: any) {
+    if (data.target.files && data.target.files.length > 0) {
+      const file: File = data.target.files.item(0);
+      const reader: FileReader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (e) => {
+        const csvData: string = reader.result as string;
+        const csvContent = csvData.split(/\r\n|\n/);
+        this.csvHeaders = this.getCSVHeaders(csvContent);
+      };
+    }
   }
 
   public setChartColor(color: string): void {
@@ -49,6 +66,15 @@ export class ChartSettingsFormComponent implements OnInit {
     const chartValues = JSON.parse(data);
     this.selectedChartSeries = chartValues;
     this.colorPickerValue = chartValues.backgroundColor;
+  }
+
+  private getCSVHeaders(csvRecords: any): Array<string> {
+    const headers = csvRecords[0].split(',');
+    const headersList: Array<string> = [];
+    for (const header of headers) {
+      headersList.push(header);
+    }
+    return headersList;
   }
 
   private initializeChartSettingsForms(): void {

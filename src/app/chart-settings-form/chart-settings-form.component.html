@@ -23,7 +23,7 @@
         <div class="row">
             <label for="data-source">Data Source:</label>
             <div class="input-group input-group-sm col-md-12">
-                <input accept=".csv" class="form-control" id="data-source" style="padding: 2px;" type="file">
+                <input (change)="fileChangeListener($event)" accept=".csv" class="form-control" id="data-source" style="padding: 2px;" type="file">
             </div>
         </div>
     </form>
