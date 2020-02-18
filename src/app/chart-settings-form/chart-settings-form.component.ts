@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnInit, Input, ViewEncapsulation, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Papa } from 'ngx-papaparse';
 
-interface ICSVData {
-  [key: string]: string;
-}
+import * as Constants from '../constants';
 @Component({
   selector: 'app-chart-settings-form',
   templateUrl: './chart-settings-form.component.html',
@@ -24,13 +23,15 @@ export class ChartSettingsFormComponent implements OnInit {
   public chartSettingsForm: FormGroup;
   public chartStyleForm: FormGroup;
   public chartValues: Array<any> = [];
+  public csvDataRecords: Array<any> = [];
+  public csvDataSets: Array<string> = [];
   public selectedChartSeries: any;
   public stringify = JSON.stringify;
 
   private chartData: any;
-  private csvHeaders: Array<string> = [];
 
   constructor(
+    private csvParser: Papa,
     private formBuilder: FormBuilder
   ) { }
 
@@ -38,16 +39,32 @@ export class ChartSettingsFormComponent implements OnInit {
     this.initializeChartSettingsForms();
   }
 
-  public fileChangeListener(data: any) {
-    if (data.target.files && data.target.files.length > 0) {
-      const file: File = data.target.files.item(0);
-      const reader: FileReader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = (e) => {
-        const csvData: string = reader.result as string;
-        const csvContent = csvData.split(/\r\n|\n/);
-        this.csvHeaders = this.getCSVHeaders(csvContent);
-      };
+  public getCSVData(data: any): void {
+    this.csvParser.parse(data.target.files[0], {
+      header: true,
+      complete: (result) => {
+        this.csvDataSets = result.meta.fields;
+        this.csvDataRecords = result.data;
+      }
+    });
+  }
+
+  public buildChartDataSet(dataset: any): void {
+    const chartDataSet: Array<any> = [];
+    if (Constants.CHART_TYPE_BAR.includes(this.chartData.chartType)) {
+
+    } else {
+      this.csvDataRecords.map(csvData => {
+        chartDataSet.push(csvData[dataset]);
+      });
+      const chartDataSets = this.getDataCount(this.csvDataRecords, dataset);
+      const chartLabels = [... new Set(chartDataSet)];
+
+      const chartData = Object.assign([], this.chartData);
+      chartData.chartValues.chartDataSets = chartDataSets;
+      chartData.chartValues.chartLabels = chartLabels;
+      this.setChartValues(chartData);
+      this.updatedChartData.emit(this.chartData);
     }
   }
 
@@ -68,13 +85,16 @@ export class ChartSettingsFormComponent implements OnInit {
     this.colorPickerValue = chartValues.backgroundColor;
   }
 
-  private getCSVHeaders(csvRecords: any): Array<string> {
-    const headers = csvRecords[0].split(',');
-    const headersList: Array<string> = [];
-    for (const header of headers) {
-      headersList.push(header);
-    }
-    return headersList;
+  private getDataCount(csvData: Array<any>, dataSet: string): Array<number> {
+    const csvDataCount: object = {};
+    const csvDataset: Array<number> = [];
+    csvData.forEach(data => {
+      csvDataCount[data[dataSet]] = (csvDataCount[data[dataSet]] || 0) + 1;
+    });
+    Object.keys(csvDataCount).forEach(key => {
+      csvDataset.push(csvDataCount[key]);
+    });
+    return csvDataset;
   }
 
   private initializeChartSettingsForms(): void {
@@ -89,6 +109,7 @@ export class ChartSettingsFormComponent implements OnInit {
   }
 
   private setChartValues(data: any): void {
+    this.chartValues = [];
     this.chartData = data;
     setTimeout(() => {
       this.chartName = data.chartName ? data.chartName : data.chartType;

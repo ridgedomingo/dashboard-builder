@@ -23,7 +23,19 @@
         <div class="row">
             <label for="data-source">Data Source:</label>
             <div class="input-group input-group-sm col-md-12">
-                <input (change)="fileChangeListener($event)" accept=".csv" class="form-control" id="data-source" style="padding: 2px;" type="file">
+                <input (change)="getCSVData($event)" accept=".csv" class="form-control" id="data-source"
+                    style="padding: 2px;" type="file">
+            </div>
+        </div>
+        <div class="row">
+            <label for="data-source">Dataset:</label>
+            <div class="input-group input-group-sm col-md-12">
+                <select class="form-control" (change)="buildChartDataSet($event.target.value)">
+                    <option value="">Dataset</option>
+                    <option *ngFor="let dataSet of csvDataSets" [value]="dataSet">
+                        {{ dataSet }}
+                    </option>
+                </select>
             </div>
         </div>
     </form>
@@ -44,7 +56,7 @@
             <div class="input-group input-group-sm col-md-12" style="margin-top: 10px;">
                 <input [(colorPicker)]="colorPickerValue" [cpCancelButton]="true" [cpOKButton]="true"
                     [cpSaveClickOutside]="false" [cpPosition]="'top'" [value]="colorPickerValue ? colorPickerValue : ''"
-                    [style.background]="colorPickerValue" (colorPickerSelect)="setChartColor($event)"/>
+                    [style.background]="colorPickerValue" (colorPickerSelect)="setChartColor($event)" />
             </div>
         </div>
     </form>
