@@ -20,6 +20,11 @@ export class ChartsBaseComponent implements OnInit {
     public chartOptions: ChartOptions = {
         maintainAspectRatio: false,
         responsive: true,
+        scales: {
+            yAxes: [
+              { ticks: { beginAtZero: true } }
+            ]
+          }
     };
     public chartLabels: Label[];
     public chartData: SingleDataSet;

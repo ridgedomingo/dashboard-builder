@@ -30,10 +30,21 @@
         <div class="row">
             <label for="data-source">Dataset:</label>
             <div class="input-group input-group-sm col-md-12">
-                <select class="form-control" (change)="buildChartDataSet($event.target.value)">
+                <select (change)="buildChartDataSet($event.target.value)" class="form-control" >
                     <option value="">Dataset</option>
                     <option *ngFor="let dataSet of csvDataSets" [value]="dataSet">
                         {{ dataSet }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div *ngIf="chartTypeIsBar" class="row">
+            <label for="data-source">Label:</label>
+            <div class="input-group input-group-sm col-md-12">
+                <select (change)="buildBarChartDataSet($event.target.value)" class="form-control">
+                    <option value="">Label</option>
+                    <option *ngFor="let label of chartLabels" [value]="label">
+                        {{ label }}
                     </option>
                 </select>
             </div>

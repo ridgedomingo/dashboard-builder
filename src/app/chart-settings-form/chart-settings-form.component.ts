@@ -19,6 +19,7 @@ export class ChartSettingsFormComponent implements OnInit {
   }
   @Output() updatedChartData: EventEmitter<any> = new EventEmitter();
   public colorPickerValue: any;
+  public chartLabels: Array<string> = [];
   public chartName: string;
   public chartSettingsForm: FormGroup;
   public chartStyleForm: FormGroup;
@@ -29,6 +30,7 @@ export class ChartSettingsFormComponent implements OnInit {
   public stringify = JSON.stringify;
 
   private chartData: any;
+  private selectedDataSet: string;
 
   constructor(
     private csvParser: Papa,
@@ -39,6 +41,66 @@ export class ChartSettingsFormComponent implements OnInit {
     this.initializeChartSettingsForms();
   }
 
+  public get chartTypeIsBar(): boolean {
+    return Constants.CHART_TYPE_BAR.includes(this.chartData.chartType);
+  }
+
+  public buildBarChartDataSet(label: string): void {
+    const csvDataCount: object = {};
+    const barChartLabel: Array<string> = [];
+    this.csvDataRecords.map(csvData => {
+      barChartLabel.push(csvData[label]);
+    });
+    const dataCount = this.csvDataRecords.reduce((prevVal, currentVal) => {
+      if (!csvDataCount[currentVal[label]]) {
+        csvDataCount[currentVal[label]] = {};
+      }
+      csvDataCount[currentVal[label]][currentVal[this.selectedDataSet]] =
+        (csvDataCount[currentVal[label]][currentVal[this.selectedDataSet]] || 0) + 1;
+      return csvDataCount;
+    }, {});
+    const dataSet: Array<any> = [];
+    const formattedDataSet = Object.values(Object.values(dataCount)).reduce((prevVal, currentVal) => {
+      Object.entries(currentVal).map(([key, value]) => {
+        prevVal[key] = prevVal[key] || [];
+        prevVal[key].push(value);
+      });
+      return prevVal;
+    }, {});
+    Object.keys(formattedDataSet).forEach(key => {
+      const chartInfo = {
+        data: formattedDataSet[key],
+        label: key
+      };
+      dataSet.push(chartInfo);
+    });
+    const chartLabels = [... new Set(barChartLabel)];
+    chartLabels.sort();
+    const chartData = Object.assign([], this.chartData);
+    chartData.chartValues.chartDataSets = dataSet;
+    chartData.chartValues.chartLabels = chartLabels;
+    this.setChartValues(chartData);
+    this.updatedChartData.emit(this.chartData);
+  }
+  public buildChartDataSet(dataset: any): void {
+    const chartDataSet: Array<any> = [];
+    if (Constants.CHART_TYPE_BAR.includes(this.chartData.chartType)) {
+      this.chartLabels = this.csvDataSets.filter(dataSet => dataSet !== dataset);
+      this.selectedDataSet = dataset;
+    } else {
+      this.csvDataRecords.map(csvData => {
+        chartDataSet.push(csvData[dataset]);
+      });
+      const chartDataSets = this.getDataCount(this.csvDataRecords, dataset);
+      const chartLabels = [... new Set(chartDataSet)];
+      const chartData = Object.assign([], this.chartData);
+      chartData.chartValues.chartDataSets = chartDataSets;
+      chartData.chartValues.chartLabels = chartLabels;
+      this.setChartValues(chartData);
+      this.updatedChartData.emit(this.chartData);
+    }
+  }
+
   public getCSVData(data: any): void {
     this.csvParser.parse(data.target.files[0], {
       header: true,
@@ -47,25 +109,6 @@ export class ChartSettingsFormComponent implements OnInit {
         this.csvDataRecords = result.data;
       }
     });
-  }
-
-  public buildChartDataSet(dataset: any): void {
-    const chartDataSet: Array<any> = [];
-    if (Constants.CHART_TYPE_BAR.includes(this.chartData.chartType)) {
-
-    } else {
-      this.csvDataRecords.map(csvData => {
-        chartDataSet.push(csvData[dataset]);
-      });
-      const chartDataSets = this.getDataCount(this.csvDataRecords, dataset);
-      const chartLabels = [... new Set(chartDataSet)];
-
-      const chartData = Object.assign([], this.chartData);
-      chartData.chartValues.chartDataSets = chartDataSets;
-      chartData.chartValues.chartLabels = chartLabels;
-      this.setChartValues(chartData);
-      this.updatedChartData.emit(this.chartData);
-    }
   }
 
   public setChartColor(color: string): void {
