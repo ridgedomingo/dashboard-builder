@@ -13,17 +13,18 @@ export class MainComponentComponent implements OnInit {
   public chartChoices: Array<any> = [
     {
       icon: faChartBar,
-      type: 'Bar Chart',
+      name: 'Bar Chart',
       values: Constants.BAR_CHART_DEFAULT_VALUES
     },
     {
       icon: faChartPie,
-      type: 'Pie Chart',
+      name: 'Pie Chart',
       values: Constants.PIE_CHART_DEFAULT_VALUES
     },
     {
       icon: faChartLine,
-      type: 'Line Chart'
+      name: 'Line Chart',
+      values: Constants.LINE_CHART_DEFAULT_VALUES
     },
   ];
 
@@ -45,7 +46,7 @@ export class MainComponentComponent implements OnInit {
 
   public addChart(selectedChart: any): void {
     const chartData = {
-      chartType: selectedChart.type,
+      chartType: selectedChart.name,
       chartValues: selectedChart.values,
       id: this.generateId(),
       cols: 3,

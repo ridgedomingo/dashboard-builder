@@ -42,7 +42,7 @@ export class ChartSettingsFormComponent implements OnInit {
   }
 
   public get chartTypeIsBar(): boolean {
-    return Constants.CHART_TYPE_BAR.includes(this.chartData.chartType);
+    return Constants.CHART_TYPE_BAR.includes(this.chartData.chartValues.chartType);
   }
 
   public buildBarChartDataSet(label: string): void {
@@ -59,32 +59,14 @@ export class ChartSettingsFormComponent implements OnInit {
         (csvDataCount[currentVal[label]][currentVal[this.selectedDataSet]] || 0) + 1;
       return csvDataCount;
     }, {});
-    const dataSet: Array<any> = [];
-    const formattedDataSet = Object.values(Object.values(dataCount)).reduce((prevVal, currentVal) => {
-      Object.entries(currentVal).map(([key, value]) => {
-        prevVal[key] = prevVal[key] || [];
-        prevVal[key].push(value);
-      });
-      return prevVal;
-    }, {});
-    Object.keys(formattedDataSet).forEach(key => {
-      const chartInfo = {
-        data: formattedDataSet[key],
-        label: key
-      };
-      dataSet.push(chartInfo);
-    });
     const chartLabels = [... new Set(barChartLabel)];
+    const dataSet = this.getBarChartDataset(dataCount);
     chartLabels.sort();
-    const chartData = Object.assign([], this.chartData);
-    chartData.chartValues.chartDataSets = dataSet;
-    chartData.chartValues.chartLabels = chartLabels;
-    this.setChartValues(chartData);
-    this.updatedChartData.emit(this.chartData);
+    this.setUpdatedChartData(dataSet, chartLabels);
   }
   public buildChartDataSet(dataset: any): void {
     const chartDataSet: Array<any> = [];
-    if (Constants.CHART_TYPE_BAR.includes(this.chartData.chartType)) {
+    if (Constants.CHART_TYPE_BAR.includes(this.chartData.chartValues.chartType)) {
       this.chartLabels = this.csvDataSets.filter(dataSet => dataSet !== dataset);
       this.selectedDataSet = dataset;
     } else {
@@ -93,11 +75,7 @@ export class ChartSettingsFormComponent implements OnInit {
       });
       const chartDataSets = this.getDataCount(this.csvDataRecords, dataset);
       const chartLabels = [... new Set(chartDataSet)];
-      const chartData = Object.assign([], this.chartData);
-      chartData.chartValues.chartDataSets = chartDataSets;
-      chartData.chartValues.chartLabels = chartLabels;
-      this.setChartValues(chartData);
-      this.updatedChartData.emit(this.chartData);
+      this.setUpdatedChartData(chartDataSets, chartLabels);
     }
   }
 
@@ -126,6 +104,25 @@ export class ChartSettingsFormComponent implements OnInit {
     const chartValues = JSON.parse(data);
     this.selectedChartSeries = chartValues;
     this.colorPickerValue = chartValues.backgroundColor;
+  }
+
+  private getBarChartDataset(dataCount: any): Array<any> {
+    const dataSet: Array<any> = [];
+    const formattedDataSet = Object.values(Object.values(dataCount)).reduce((prevVal, currentVal) => {
+      Object.entries(currentVal).map(([key, value]) => {
+        prevVal[key] = prevVal[key] || [];
+        prevVal[key].push(value);
+      });
+      return prevVal;
+    }, {});
+    Object.keys(formattedDataSet).forEach(key => {
+      const chartInfo = {
+        data: formattedDataSet[key],
+        label: key
+      };
+      dataSet.push(chartInfo);
+    });
+    return dataSet;
   }
 
   private getDataCount(csvData: Array<any>, dataSet: string): Array<number> {
@@ -173,6 +170,14 @@ export class ChartSettingsFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  private setUpdatedChartData(dataSet: any, chartLabels: Array<string>): void {
+    const chartData = Object.assign([], this.chartData);
+    chartData.chartValues.chartDataSets = dataSet;
+    chartData.chartValues.chartLabels = chartLabels;
+    this.setChartValues(chartData);
+    this.updatedChartData.emit(this.chartData);
   }
 
 }
