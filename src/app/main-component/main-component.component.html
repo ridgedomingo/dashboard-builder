@@ -5,7 +5,7 @@
         <div class="row" id="chart-choices-container">
             <div (click)="addChart(choice)" *ngFor="let choice of chartChoices" class="col-md-4 chart-choices">
                 <fa-icon [icon]="choice.icon" size="2x"></fa-icon>
-                <span> {{ choice.name }} </span>
+                <span [class]="choice.class"> {{ choice.name }} </span>
             </div>
         </div>
         <div *ngIf="currentlySelectedChart">
@@ -18,6 +18,9 @@
                 <ng-container [ngSwitch]="item.chartType">
                     <ng-container *ngSwitchCase="'Bar Chart'">
                         <app-vertical-bar-chart [chartValues]="item.chartValues" [id]="item.id" (setSelectedChartId)="setSelectedChart($event)"></app-vertical-bar-chart> 
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Donut Chart'">
+                        <app-doughnut-chart [chartValues]="item.chartValues" [id]="item.id" (setSelectedChartId)="setSelectedChart($event)"></app-doughnut-chart>
                     </ng-container>
                     <ng-container *ngSwitchCase="'Line Chart'">
                         <app-line-chart [chartValues]="item.chartValues" [id]="item.id" (setSelectedChartId)="setSelectedChart($event)"></app-line-chart> 

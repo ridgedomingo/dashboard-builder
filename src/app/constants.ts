@@ -1,3 +1,5 @@
+import { faChartBar, faChartPie, faChartLine, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+
 export const BAR_CHART_DEFAULT_VALUES = {
   chartColor: [{ backgroundColor: '#87c6f3' }, { backgroundColor: '#ffa1b5' }],
   chartDataSets: [{ data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
@@ -5,6 +7,14 @@ export const BAR_CHART_DEFAULT_VALUES = {
   chartLabels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
   chartLegend: true,
   chartType: 'bar',
+};
+
+export const DOUGHNUT_CHART_DEFAULT_VALUES = {
+  chartColor: [{ backgroundColor: ['#86c7f3', '#ffa1b5', '#f6f0ad'] }],
+  chartDataSets: [300, 500, 100],
+  chartLabels: ['Download Sales', 'In Store Sales', 'Mail Sales'],
+  chartLegend: true,
+  chartType: 'doughnut',
 };
 
 export const LINE_CHART_DEFAULT_VALUES = {
@@ -23,5 +33,29 @@ export const PIE_CHART_DEFAULT_VALUES = {
   chartType: 'pie',
 };
 
-export const CHART_TYPE_PIE = ['pie'];
+export const CHART_CHOICES = [
+  {
+    icon: faChartBar,
+    name: 'Bar Chart',
+    values: BAR_CHART_DEFAULT_VALUES
+  },
+  {
+    icon: faChartPie,
+    name: 'Pie Chart',
+    values: PIE_CHART_DEFAULT_VALUES
+  },
+  {
+    icon: faChartLine,
+    name: 'Line Chart',
+    values: LINE_CHART_DEFAULT_VALUES
+  },
+  {
+    class: 'wrap-chart-choice-name',
+    icon: faCircleNotch,
+    name: 'Donut Chart',
+    values: DOUGHNUT_CHART_DEFAULT_VALUES
+  },
+];
+
+export const CHART_TYPE_PIE = ['doughtnut', 'pie'];
 export const CHART_TYPE_BAR = ['bar', 'line'];
