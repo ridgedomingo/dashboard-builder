@@ -28,23 +28,23 @@
             </div>
         </div>
         <div class="row">
-            <label for="data-source">Dataset:</label>
+            <label for="data-source">Field:</label>
             <div class="input-group input-group-sm col-md-12">
                 <select (change)="buildChartDataSet($event.target.value)" class="form-control" >
-                    <option value="">Dataset</option>
-                    <option *ngFor="let dataSet of csvDataSets" [value]="dataSet">
-                        {{ dataSet }}
+                    <option value="">Field</option>
+                    <option *ngFor="let field of csvFields" [value]="field">
+                        {{ field }}
                     </option>
                 </select>
             </div>
         </div>
         <div *ngIf="chartTypeHasMultiDataset" class="row">
-            <label for="data-source">Label:</label>
+            <label for="data-source">Dimension:</label>
             <div class="input-group input-group-sm col-md-12">
-                <select (change)="buildChartMultiDataset($event.target.value)" class="form-control">
-                    <option value="">Label</option>
-                    <option *ngFor="let label of chartLabels" [value]="label">
-                        {{ label }}
+                <select (change)="buildChartWithMultiDataset($event.target.value)" class="form-control">
+                    <option value="">Dimension</option>
+                    <option *ngFor="let dimension of chartDimension" [value]="dimension">
+                        {{ dimension }}
                     </option>
                 </select>
             </div>

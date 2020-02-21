@@ -16,20 +16,20 @@
     <div id="dashboard-container">
         <gridster [options]="gridsterOptions">
             <gridster-item *ngFor="let item of chartLayout" [item]="item">
-                <ng-container [ngSwitch]="item.chartType">
-                    <ng-container *ngSwitchCase="'Bar Chart'">
+                <ng-container [ngSwitch]="item.chartValues.chartType">
+                    <ng-container *ngSwitchCase="'bar'">
                         <app-vertical-bar-chart [chartValues]="item.chartValues" [id]="item.id"
                             (setSelectedChartId)="setSelectedChart($event)"></app-vertical-bar-chart>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Donut Chart'">
+                    <ng-container *ngSwitchCase="'doughnut'">
                         <app-doughnut-chart [chartValues]="item.chartValues" [id]="item.id"
                             (setSelectedChartId)="setSelectedChart($event)"></app-doughnut-chart>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Line Chart'">
+                    <ng-container *ngSwitchCase="'line'">
                         <app-line-chart [chartValues]="item.chartValues" [id]="item.id"
                             (setSelectedChartId)="setSelectedChart($event)"></app-line-chart>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Pie Chart'">
+                    <ng-container *ngSwitchCase="'pie'">
                         <app-pie-chart [chartValues]="item.chartValues" [id]="item.id"
                             (setSelectedChartId)="setSelectedChart($event)"></app-pie-chart>
                     </ng-container>
