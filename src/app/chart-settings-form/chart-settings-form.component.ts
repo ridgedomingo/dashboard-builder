@@ -47,24 +47,29 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     return Constants.CHART_HAS_MULTI_DATASET.includes(this.chartData.chartValues.chartType);
   }
 
-  public buildChartWithMultiDataset(label: string): void {
+  public buildChartWithMultiDataset(dimension: string): void {
     const csvDataCount: object = {};
-    const barChartLabel: Array<string> = [];
+    const multiDataSetFields: Array<string> = [];
     this.csvDataRecords.map(csvData => {
-      barChartLabel.push(csvData[label]);
+      const fields = (csvData[dimension] === '' || !csvData.hasOwnProperty(dimension))
+        ? 'Data not available' : csvData[dimension];
+      multiDataSetFields.push(fields);
     });
     const dataCount = this.csvDataRecords.reduce((prevVal, currentVal) => {
-      if (!csvDataCount[currentVal[label]]) {
-        csvDataCount[currentVal[label]] = {};
+      if (!csvDataCount[currentVal[dimension]]) {
+        csvDataCount[currentVal[dimension]] = {};
       }
-      csvDataCount[currentVal[label]][currentVal[this.selectedField]] =
-        (csvDataCount[currentVal[label]][currentVal[this.selectedField]] || 0) + 1;
+      if (currentVal.hasOwnProperty(dimension)) {
+
+      csvDataCount[currentVal[dimension]][currentVal[this.selectedField]] =
+        (csvDataCount[currentVal[dimension]][currentVal[this.selectedField]] || 0) + 1;
+      }
       return csvDataCount;
     }, {});
-    const chartLabels = [... new Set(barChartLabel)];
-    const dataSet = this.getBarChartDataset(dataCount);
-    chartLabels.sort();
-    this.setUpdatedChartData(dataSet, chartLabels);
+    const chartFields = [... new Set(multiDataSetFields)];
+    const chartDimension = this.createMultiDatasetsDimension(dataCount);
+    chartFields.sort();
+    this.setUpdatedChartData(chartDimension, chartFields);
   }
   public buildChartDataSet(field: string): void {
     if (Constants.CHART_HAS_MULTI_DATASET.includes(this.chartData.chartValues.chartType)) {
@@ -103,39 +108,41 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
   }
 
   private buildChartWithSingleDataset(field: string): void {
-    const chartDataSet: Array<any> = [];
+    const chartFields: Array<any> = [];
     this.csvDataRecords.map(csvData => {
-      chartDataSet.push(csvData[field]);
+      const fields = (csvData[field] === '' || csvData[field] === undefined) ? 'Data not available' : csvData[field];
+      chartFields.push(fields);
     });
     const chartDataSets = this.getDataCount(this.csvDataRecords, field);
-    const chartLabels = [... new Set(chartDataSet)];
+    const chartLabels = [... new Set(chartFields)];
     this.setUpdatedChartData(chartDataSets, chartLabels);
   }
 
-  private getBarChartDataset(dataCount: any): Array<any> {
+  private createMultiDatasetsDimension(dataCount: any): Array<any> {
     const dataSet: Array<any> = [];
     const formattedDataSet = Object.values(Object.values(dataCount)).reduce((prevVal, currentVal) => {
       Object.entries(currentVal).map(([key, value]) => {
-        prevVal[key] = prevVal[key] || [];
-        prevVal[key].push(value);
+          prevVal[key] = prevVal[key] || [];
+          prevVal[key].push(value);
       });
       return prevVal;
     }, {});
     Object.keys(formattedDataSet).forEach(key => {
+      const label = key === '' ? 'Data not available' : key;
       const chartInfo = {
         data: formattedDataSet[key],
-        label: key
+        label
       };
       dataSet.push(chartInfo);
     });
     return dataSet;
   }
 
-  private getDataCount(csvData: Array<any>, dataSet: string): Array<number> {
+  private getDataCount(csvData: Array<any>, field: string): Array<number> {
     const csvDataCount: object = {};
     const csvDataset: Array<number> = [];
     csvData.forEach(data => {
-      csvDataCount[data[dataSet]] = (csvDataCount[data[dataSet]] || 0) + 1;
+      csvDataCount[data[field]] = (csvDataCount[data[field]] || 0) + 1;
     });
     Object.keys(csvDataCount).forEach(key => {
       csvDataset.push(csvDataCount[key]);
@@ -187,10 +194,10 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setUpdatedChartData(dataSet: any, chartLabels: Array<string>): void {
+  private setUpdatedChartData(dimension: any, fields: Array<string>): void {
     const chartData = Object.assign({}, this.chartData);
-    chartData.chartValues.chartDataSets = dataSet;
-    chartData.chartValues.chartLabels = chartLabels;
+    chartData.chartValues.chartDataSets = dimension;
+    chartData.chartValues.chartLabels = fields;
     this.setChartValues(chartData);
     this.updatedChartData.emit(chartData);
   }
