@@ -17,14 +17,14 @@
         <div class="row">
             <label for="name">Name:</label>
             <div class="input-group input-group-sm col-md-12">
-                <input class="form-control" id="name" type="text">
+                <input class="form-control" formControlName="name" id="name" type="text">
             </div>
         </div>
         <div class="row">
             <label for="data-source">Data Source:</label>
             <div class="input-group input-group-sm col-md-12">
-                <input (change)="getCSVData($event)" accept=".csv" class="form-control" id="data-source"
-                    style="padding: 2px;" type="file">
+                <input (change)="getCSVData($event)" accept=".csv" class="form-control" formControlName="dataSource"
+                id="data-source" style="padding: 2px;" type="file">
             </div>
         </div>
         <div class="row">
@@ -38,10 +38,10 @@
                 </select>
             </div>
         </div>
-        <div *ngIf="chartTypeIsBar" class="row">
+        <div *ngIf="chartTypeHasMultiDataset" class="row">
             <label for="data-source">Label:</label>
             <div class="input-group input-group-sm col-md-12">
-                <select (change)="buildBarChartDataSet($event.target.value)" class="form-control">
+                <select (change)="buildChartMultiDataset($event.target.value)" class="form-control">
                     <option value="">Label</option>
                     <option *ngFor="let label of chartLabels" [value]="label">
                         {{ label }}

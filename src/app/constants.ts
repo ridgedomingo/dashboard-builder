@@ -57,5 +57,5 @@ export const CHART_CHOICES = [
   },
 ];
 
-export const CHART_TYPE_PIE = ['doughtnut', 'pie'];
-export const CHART_TYPE_BAR = ['bar', 'line'];
+export const CHART_HAS_SINGLE_DATASET = ['doughtnut', 'pie'];
+export const CHART_HAS_MULTI_DATASET = ['bar', 'line'];

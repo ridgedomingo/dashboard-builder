@@ -10,17 +10,15 @@ import * as Constants from '../constants';
 })
 export class MainComponentComponent implements OnInit {
   public chartChoices: Array<any> = Constants.CHART_CHOICES;
-
   public chartLayout: GridsterItem[] = [];
+  public currentlySelectedChart: any;
   public gridsterOptions: GridsterConfig = {
     draggable: { enabled: true },
     pushItems: true,
     resizable: { enabled: true },
     gridType: 'scrollVertical',
-    maxItemCols: 4
+    maxCols: 4
   };
-
-  public currentlySelectedChart: any;
 
   constructor() { }
 
@@ -28,7 +26,7 @@ export class MainComponentComponent implements OnInit {
   }
 
   public addChart(selectedChart: any): void {
-    const chartData = {
+    const data = {
       chartType: selectedChart.name,
       chartValues: selectedChart.values,
       id: this.generateId(),
@@ -37,6 +35,7 @@ export class MainComponentComponent implements OnInit {
       x: 0,
       y: this.chartLayout.length
     };
+    const chartData = this.cloneChartDataInitialValues(data);
     this.chartLayout.push(chartData);
     this.currentlySelectedChart = chartData;
   }
@@ -48,6 +47,12 @@ export class MainComponentComponent implements OnInit {
   public setUpdatedChartData(data: any): void {
     const updatedChartIndex = this.chartLayout.findIndex(chart => chart.id === data.id);
     this.chartLayout[updatedChartIndex] = Object.assign({}, data);
+  }
+
+  private cloneChartDataInitialValues(chartData: any): any {
+    const chartValues = JSON.stringify(chartData);
+    const chartDataClone = JSON.parse(chartValues);
+    return chartDataClone;
   }
 
   private generateId(): string {

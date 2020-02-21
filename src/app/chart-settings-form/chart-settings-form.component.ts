@@ -12,8 +12,7 @@ import * as Constants from '../constants';
 export class ChartSettingsFormComponent implements OnInit {
   @Input() set chart(data: any) {
     if (data) {
-      this.colorPickerValue = '';
-      this.chartValues = [];
+      this.resetToDefaultPageValues();
       this.setChartValues(data);
     }
   }
@@ -41,11 +40,11 @@ export class ChartSettingsFormComponent implements OnInit {
     this.initializeChartSettingsForms();
   }
 
-  public get chartTypeIsBar(): boolean {
-    return Constants.CHART_TYPE_BAR.includes(this.chartData.chartValues.chartType);
+  public get chartTypeHasMultiDataset(): boolean {
+    return Constants.CHART_HAS_MULTI_DATASET.includes(this.chartData.chartValues.chartType);
   }
 
-  public buildBarChartDataSet(label: string): void {
+  public buildChartMultiDataset(label: string): void {
     const csvDataCount: object = {};
     const barChartLabel: Array<string> = [];
     this.csvDataRecords.map(csvData => {
@@ -66,7 +65,7 @@ export class ChartSettingsFormComponent implements OnInit {
   }
   public buildChartDataSet(dataset: any): void {
     const chartDataSet: Array<any> = [];
-    if (Constants.CHART_TYPE_BAR.includes(this.chartData.chartValues.chartType)) {
+    if (Constants.CHART_HAS_MULTI_DATASET.includes(this.chartData.chartValues.chartType)) {
       this.chartLabels = this.csvDataSets.filter(dataSet => dataSet !== dataset);
       this.selectedDataSet = dataset;
     } else {
@@ -148,12 +147,20 @@ export class ChartSettingsFormComponent implements OnInit {
     // })
   }
 
+  private resetToDefaultPageValues(): void {
+    this.colorPickerValue = '';
+    this.chartValues = [];
+    if (this.chartSettingsForm) {
+      this.chartSettingsForm.reset();
+    }
+  }
+
   private setChartValues(data: any): void {
     this.chartValues = [];
     this.chartData = data;
     setTimeout(() => {
       this.chartName = data.chartName ? data.chartName : data.chartType;
-      if (data.chartValues.chartDataSets[0].hasOwnProperty('label')) {
+      if (this.chartTypeHasMultiDataset) {
         data.chartValues.chartDataSets.map(dataSets => {
           const chartValues = {
             label: dataSets.label,

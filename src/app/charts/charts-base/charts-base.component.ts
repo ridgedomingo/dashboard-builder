@@ -41,8 +41,8 @@ export class ChartsBaseComponent implements OnInit {
         this.setSelectedChartId.emit(data.event.target.id);
     }
 
-    private chartTypeIsGraph(chartType: string): boolean {
-        return Constants.CHART_TYPE_BAR.includes(chartType);
+    private chartTypeHasMultiDataset(chartType: string): boolean {
+        return Constants.CHART_HAS_MULTI_DATASET.includes(chartType);
     }
 
     private setChartValues(values: any): void {
@@ -57,7 +57,7 @@ export class ChartsBaseComponent implements OnInit {
         this.chartLabels = values.chartLabels;
         this.chartLegend = values.chartLegend;
         this.chartType = values.chartType;
-        this.chartOptions.scales = this.chartTypeIsGraph(values.chartType) ? scales : {};
+        this.chartOptions.scales = this.chartTypeHasMultiDataset(values.chartType) ? scales : {};
     }
 
 }
