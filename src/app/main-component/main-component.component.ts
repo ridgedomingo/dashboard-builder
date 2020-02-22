@@ -20,6 +20,9 @@ export class MainComponentComponent implements OnInit {
     maxCols: 4
   };
 
+  public minifiedChartChoicesTriggerIcon: any = Constants.ARROW_UP_ICON;
+  public showMinifiedChartChoicesContainer: boolean;
+
   constructor() { }
 
   ngOnInit() {
@@ -38,6 +41,14 @@ export class MainComponentComponent implements OnInit {
     const chartData = this.cloneChartDataInitialValues(data);
     this.chartLayout.push(chartData);
     this.currentlySelectedChart = chartData;
+    if (!this.currentlySelectedChart) {
+      this.showMinifiedChartChoicesContainer = true;
+    }
+  }
+
+  public minifiedChartChoicesContainerTrigger(): void {
+    this.showMinifiedChartChoicesContainer = !this.showMinifiedChartChoicesContainer;
+    this.minifiedChartChoicesTriggerIcon = this.showMinifiedChartChoicesContainer ? Constants.ARROW_DOWN_ICON : Constants.ARROW_UP_ICON;
   }
 
   public setSelectedChart(chartId: any): void {

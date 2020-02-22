@@ -11,23 +11,43 @@
         position: fixed;
         width: 20%;
 
-        hr { border-color: #f4f4f4; }
+        hr {
+            border-color: #f4f4f4;
+        }
 
-        #chart-choices-container {
+        .chart-choices-container {
             max-height: 35%;
             overflow-y: auto;
+            transition: max-height 0.3s ease-out;
 
-            .chart-choices {
-                align-items: center;
-                display: flex;
-                flex-wrap: wrap;
-                margin-top: 5px;
-                justify-content: center;
-                white-space: nowrap;
+            -webkit-transition: max-height 0.3s ease-out;
+            -moz-transition: max-height 0.3s ease-out;
+            -o-transition: max-height 0.3s ease-out;
+        }
 
-                span {
-                    margin-top: 3px;
-                }
+        .minified-chart-choices-container {
+            display: flex;
+            flex-wrap: nowrap;
+            max-height: 10%;
+            overflow-x: auto;
+            transition: max-height 0.3s ease-out;
+
+            -webkit-transition: max-height 0.3s ease-out;
+            -moz-transition: max-height 0.3s ease-out;
+            -o-transition: max-height 0.3s ease-out;
+           
+        }
+
+        .chart-choices {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 5px;
+            justify-content: center;
+            white-space: nowrap;
+
+            span {
+                margin-top: 3px;
             }
         }
     }

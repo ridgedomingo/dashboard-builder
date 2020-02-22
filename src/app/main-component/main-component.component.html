@@ -2,11 +2,21 @@
     <div id="toolbox-container">
         <h2>Toolbox</h2>
         <hr>
-        <div class="row" id="chart-choices-container">
-            <div (click)="addChart(choice)" *ngFor="let choice of chartChoices" class="col-md-4 chart-choices">
-                <fa-icon [icon]="choice.icon" size="2x"></fa-icon>
-                <span [class]="choice.class"> {{ choice.name }} </span>
+        <fa-icon (click)="minifiedChartChoicesContainerTrigger()" [icon]="minifiedChartChoicesTriggerIcon" style="float: right;">
+        </fa-icon>
+        <div [ngClass]="{'minified-chart-choices-container': showMinifiedChartChoicesContainer }"
+            class="chart-choices-container row">
+            <div *ngFor="let chart of chartChoices" (click)="addChart(chart)"
+                [ngClass]="showMinifiedChartChoicesContainer ? 'col-md-3' : 'col-md-4' " class="chart-choices"
+                [isDisabled]="!showMinifiedChartChoicesContainer" placement="left" [tooltip]="chart.name">
+                <fa-icon [icon]="chart.icon" size="2x"></fa-icon>
+                <span *ngIf="!showMinifiedChartChoicesContainer" [class]="chart.class"> {{ chart.name }} </span>
             </div>
+            <ng-template #minifiedChartChoices>
+                <div (click)="addChart(choice)" *ngFor="let choice of chartChoices" class="col-md-3 chart-choices">
+                    <fa-icon [icon]="choice.icon" size="2x"></fa-icon>
+                </div>
+            </ng-template>
         </div>
         <div *ngIf="currentlySelectedChart">
             <app-chart-settings-form [chart]="currentlySelectedChart" (updatedChartData)="setUpdatedChartData($event)">
