@@ -15,6 +15,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
 
   public fieldIsFocused: boolean;
   public searchField: FormControl;
+  public selectedSearchFieldValue = '';
 
   private componentIsDestroyed$: Subject<boolean> = new Subject();
   private copyOfSelectionList: Array<any>;
@@ -38,6 +39,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
 
   public setSelectedValue(selectedValue: string): void {
     this.selectedValue.emit(selectedValue);
+    this.selectedSearchFieldValue = selectedValue;
     this.hideSelection();
   }
 

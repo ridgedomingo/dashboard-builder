@@ -1,8 +1,8 @@
 <input [formControl]="searchField" (focus)="showSelection()" (focusout)="hideSelection()" class="form-control"
-    type="text">
+    type="text" [value]="selectedSearchFieldValue">
 <ng-container *ngIf="fieldIsFocusedAndThereAreAvailableSelection">
     <div id="autocomplete-container">
-        <div *ngFor="let selection of selectionList" (click)="setSelectedValue(selection)">
+        <div *ngFor="let selection of selectionList" (mousedown)="setSelectedValue(selection)">
             <p>{{ selection }} </p>
         </div>
     </div>

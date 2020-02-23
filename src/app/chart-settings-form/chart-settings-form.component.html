@@ -30,22 +30,16 @@
         <ng-container *ngIf="csvFields.length > 0">
             <div class="row">
                 <label for="data-source">Field:</label>
-
                 <div class="input-group input-group-sm col-md-12">
-                    <app-autocomplete [selectionList]="csvFields" (selectedValue)="getSelectedField($event)">
+                    <app-autocomplete #autoComplete [selectionList]="csvFields" (selectedValue)="getSelectedField($event)">
                     </app-autocomplete>
                 </div>
             </div>
             <div *ngIf="chartTypeHasMultiDataset" class="row">
                 <label for="data-source">Dimension:</label>
                 <div class="input-group input-group-sm col-md-12">
-                    <select (change)="buildChartWithMultiDataset($event.target.value)" class="form-control"
-                        formControlName="dimension">
-                        <option value="">Dimension</option>
-                        <option *ngFor="let dimension of chartDimension" [value]="dimension">
-                            {{ dimension }}
-                        </option>
-                    </select>
+                    <app-autocomplete #autoComplete [selectionList]="chartDimension" (selectedValue)="buildChartWithMultiDataset($event)">
+                    </app-autocomplete>
                 </div>
             </div>
         </ng-container>

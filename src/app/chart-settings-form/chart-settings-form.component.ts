@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Input, ViewEncapsulation, Output, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, ViewEncapsulation, Output, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Papa } from 'ngx-papaparse';
 import { Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import * as Constants from '../constants';
   encapsulation: ViewEncapsulation.None
 })
 export class ChartSettingsFormComponent implements OnInit, OnDestroy {
+  @ViewChild('autoComplete', {static: false}) autoComplete: any;
   @Input() set chart(data: any) {
     if (data) {
       this.resetToDefaultPageValues();
@@ -61,8 +62,8 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
       }
       if (currentVal.hasOwnProperty(dimension)) {
 
-      csvDataCount[currentVal[dimension]][currentVal[this.selectedField]] =
-        (csvDataCount[currentVal[dimension]][currentVal[this.selectedField]] || 0) + 1;
+        csvDataCount[currentVal[dimension]][currentVal[this.selectedField]] =
+          (csvDataCount[currentVal[dimension]][currentVal[this.selectedField]] || 0) + 1;
       }
       return csvDataCount;
     }, {});
@@ -122,8 +123,8 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     const dataSet: Array<any> = [];
     const formattedDataSet = Object.values(Object.values(dataCount)).reduce((prevVal, currentVal) => {
       Object.entries(currentVal).map(([key, value]) => {
-          prevVal[key] = prevVal[key] || [];
-          prevVal[key].push(value);
+        prevVal[key] = prevVal[key] || [];
+        prevVal[key].push(value);
       });
       return prevVal;
     }, {});
@@ -171,6 +172,9 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
   private resetToDefaultPageValues(): void {
     this.colorPickerValue = '';
     this.chartValues = [];
+    if (this.autoComplete) {
+      this.autoComplete.selectedSearchFieldValue = '';
+    }
     if (this.chartSettingsForm) {
       this.chartSettingsForm.reset({}, { emitEvent: false });
     }
