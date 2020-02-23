@@ -150,6 +150,10 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     return csvDataset;
   }
 
+  public getSelectedField(field: string): void {
+    this.buildChartDataSet(field);
+  }
+
   private initializeChartSettingsForms(): void {
     this.chartSettingsForm = this.formBuilder.group({
       dataSource: [''],

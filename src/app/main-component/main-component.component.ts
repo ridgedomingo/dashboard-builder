@@ -41,9 +41,7 @@ export class MainComponentComponent implements OnInit {
     const chartData = this.cloneChartDataInitialValues(data);
     this.chartLayout.push(chartData);
     this.currentlySelectedChart = chartData;
-    if (!this.currentlySelectedChart) {
-      this.showMinifiedChartChoicesContainer = true;
-    }
+    this.showMinifiedChartChoicesContainer = true;
   }
 
   public minifiedChartChoicesContainerTrigger(): void {

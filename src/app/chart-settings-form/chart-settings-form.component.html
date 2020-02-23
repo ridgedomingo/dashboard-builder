@@ -24,31 +24,31 @@
             <label for="data-source">Data Source:</label>
             <div class="input-group input-group-sm col-md-12">
                 <input (change)="getCSVData($event)" accept=".csv" class="form-control" formControlName="dataSource"
-                id="data-source" style="padding: 2px;" type="file">
+                    id="data-source" style="padding: 2px;" type="file">
             </div>
         </div>
-        <div class="row">
-            <label for="data-source">Field:</label>
-            <div class="input-group input-group-sm col-md-12">
-                <select (change)="buildChartDataSet($event.target.value)" class="form-control" formControlName="field" >
-                    <option value="">Field</option>
-                    <option *ngFor="let field of csvFields" [value]="field">
-                        {{ field }}
-                    </option>
-                </select>
+        <ng-container *ngIf="csvFields.length > 0">
+            <div class="row">
+                <label for="data-source">Field:</label>
+
+                <div class="input-group input-group-sm col-md-12">
+                    <app-autocomplete [selectionList]="csvFields" (selectedValue)="getSelectedField($event)">
+                    </app-autocomplete>
+                </div>
             </div>
-        </div>
-        <div *ngIf="chartTypeHasMultiDataset" class="row">
-            <label for="data-source">Dimension:</label>
-            <div class="input-group input-group-sm col-md-12">
-                <select (change)="buildChartWithMultiDataset($event.target.value)" class="form-control" formControlName="dimension">
-                    <option value="">Dimension</option>
-                    <option *ngFor="let dimension of chartDimension" [value]="dimension">
-                        {{ dimension }}
-                    </option>
-                </select>
+            <div *ngIf="chartTypeHasMultiDataset" class="row">
+                <label for="data-source">Dimension:</label>
+                <div class="input-group input-group-sm col-md-12">
+                    <select (change)="buildChartWithMultiDataset($event.target.value)" class="form-control"
+                        formControlName="dimension">
+                        <option value="">Dimension</option>
+                        <option *ngFor="let dimension of chartDimension" [value]="dimension">
+                            {{ dimension }}
+                        </option>
+                    </select>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </form>
 </ng-template>
 

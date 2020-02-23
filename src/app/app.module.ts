@@ -10,14 +10,16 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { AppComponent } from './app.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { MainComponentComponent } from './main-component/main-component.component';
 import { ChartSettingsFormComponent } from './chart-settings-form/chart-settings-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AutocompleteComponent,
     MainComponentComponent,
-    ChartSettingsFormComponent
+    ChartSettingsFormComponent,
   ],
   imports: [
     BrowserModule,
