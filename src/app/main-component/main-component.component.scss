@@ -11,6 +11,12 @@
         position: fixed;
         width: 20%;
 
+        #minified-chart-container-trigger {
+            position: absolute;
+            right: 10px;
+            z-index: 2;
+        }
+
         hr {
             border-color: #f4f4f4;
         }
@@ -46,8 +52,11 @@
             justify-content: center;
             white-space: nowrap;
 
-            span {
+            p{
+                font-size: 14px;
+                letter-spacing: 1px;
                 margin-top: 3px;
+                text-align: center;
             }
         }
     }

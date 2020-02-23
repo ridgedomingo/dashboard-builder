@@ -36,23 +36,23 @@ export const PIE_CHART_DEFAULT_VALUES = {
 export const CHART_CHOICES = [
   {
     icon: faChartBar,
-    name: 'Bar Chart',
+    name: 'Bar',
     values: BAR_CHART_DEFAULT_VALUES
   },
   {
     icon: faChartPie,
-    name: 'Pie Chart',
+    name: 'Pie',
     values: PIE_CHART_DEFAULT_VALUES
   },
   {
     icon: faChartLine,
-    name: 'Line Chart',
+    name: 'Line',
     values: LINE_CHART_DEFAULT_VALUES
   },
   {
     class: 'wrap-chart-choice-name',
     icon: faCircleNotch,
-    name: 'Donut Chart',
+    name: 'Donut',
     values: DOUGHNUT_CHART_DEFAULT_VALUES
   },
 ];

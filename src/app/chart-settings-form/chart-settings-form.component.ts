@@ -153,6 +153,8 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
   private initializeChartSettingsForms(): void {
     this.chartSettingsForm = this.formBuilder.group({
       dataSource: [''],
+      dimension: [''],
+      field: [''],
       name: ['']
     });
     this.subscribeToNameControlValueChanges();
