@@ -10,12 +10,23 @@ import { debounceTime, distinctUntilChanged, takeUntil, } from 'rxjs/operators';
   styleUrls: ['./autocomplete.component.scss']
 })
 export class AutocompleteComponent implements OnInit, OnDestroy {
-  @Input() selectionList: Array<any>;
+  @Input() set autoCompleteItems(list: Array<string>) {
+    if (list) {
+      this.selectionList = list;
+      this.copyOfSelectionList = Object.assign([], list);
+    }
+  }
+  @Input() set currentValue(value: string) {
+    if (value) {
+      this.selectedSearchFieldValue = value;
+    }
+  }
   @Output() selectedValue: EventEmitter<string> = new EventEmitter();
 
   public fieldIsFocused: boolean;
   public searchField: FormControl;
   public selectedSearchFieldValue = '';
+  public selectionList: Array<string>;
 
   private componentIsDestroyed$: Subject<boolean> = new Subject();
   private copyOfSelectionList: Array<any>;
@@ -25,7 +36,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.copyOfSelectionList = Object.assign([], this.selectionList);
     this.subscribeToSearchFieldValueChanges();
   }
 
@@ -60,7 +70,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy {
   }
 
   private filterSearchResults(searchValue: string): void {
-    const filteredSelection = this.selectionList.filter(selection => selection.toLowerCase().includes(searchValue));
+    const filteredSelection = this.selectionList.filter(selection => selection.toLowerCase().includes(searchValue.toLowerCase()));
     this.selectionList = filteredSelection.sort();
   }
 

@@ -31,14 +31,14 @@
             <div class="row">
                 <label for="data-source">Field:</label>
                 <div class="input-group input-group-sm col-md-12">
-                    <app-autocomplete #autoComplete [selectionList]="csvFields" (selectedValue)="getSelectedField($event)">
+                    <app-autocomplete #autoComplete [autoCompleteItems]="csvFields" [currentValue]="selectedField" (selectedValue)="buildChartDataSet($event)">
                     </app-autocomplete>
                 </div>
             </div>
             <div *ngIf="chartTypeHasMultiDataset" class="row">
                 <label for="data-source">Dimension:</label>
                 <div class="input-group input-group-sm col-md-12">
-                    <app-autocomplete #autoComplete [selectionList]="chartDimension" (selectedValue)="buildChartWithMultiDataset($event)">
+                    <app-autocomplete #autoComplete [autoCompleteItems]="chartDimension" [currentValue]="selectedDimension" (selectedValue)="buildChartWithMultiDataset($event)">
                     </app-autocomplete>
                 </div>
             </div>

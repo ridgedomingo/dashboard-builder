@@ -30,7 +30,6 @@ export class MainComponentComponent implements OnInit {
 
   public addChart(selectedChart: any): void {
     const data = {
-      chartName: selectedChart.name,
       chartValues: selectedChart.values,
       id: this.generateId(),
       cols: 3,

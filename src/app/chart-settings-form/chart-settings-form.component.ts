@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Input, ViewEncapsulation, Output, OnDestroy, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Input, ViewEncapsulation, Output, OnDestroy, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Papa } from 'ngx-papaparse';
 import { Subject } from 'rxjs';
@@ -12,7 +12,7 @@ import * as Constants from '../constants';
   encapsulation: ViewEncapsulation.None
 })
 export class ChartSettingsFormComponent implements OnInit, OnDestroy {
-  @ViewChild('autoComplete', {static: false}) autoComplete: any;
+  @ViewChild('autoComplete', { static: false }) autoComplete: any;
   @Input() set chart(data: any) {
     if (data) {
       this.resetToDefaultPageValues();
@@ -29,11 +29,12 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
   public csvDataRecords: Array<any> = [];
   public colorPickerValue: any;
   public selectedChartSeries: any;
+  public selectedDimension: string;
+  public selectedField: string;
   public stringify = JSON.stringify;
 
   private chartData: any;
   private componentIsDestroyed$: Subject<boolean> = new Subject();
-  private selectedField: string;
 
   constructor(
     private csvParser: Papa,
@@ -49,6 +50,8 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
   }
 
   public buildChartWithMultiDataset(dimension: string): void {
+    this.selectedDimension = dimension;
+    this.setUpdatedChartData({ selectedDimension: dimension });
     const csvDataCount: object = {};
     const multiDataSetFields: Array<string> = [];
     this.csvDataRecords.map(csvData => {
@@ -70,12 +73,18 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     const chartFields = [... new Set(multiDataSetFields)];
     const chartDimension = this.createMultiDatasetsDimension(dataCount);
     chartFields.sort();
-    this.setUpdatedChartData(chartDimension, chartFields);
+    const updatedData = {
+      chartDataSets: chartDimension,
+      chartLabels: chartFields
+    };
+    this.setUpdatedChartData(updatedData);
   }
   public buildChartDataSet(field: string): void {
+    this.selectedField = field;
+    this.setUpdatedChartData({ selectedField: field });
     if (Constants.CHART_HAS_MULTI_DATASET.includes(this.chartData.chartValues.chartType)) {
       this.chartDimension = this.csvFields.filter(csvField => csvField !== field);
-      this.selectedField = field;
+      this.setUpdatedChartData({ chartDimension: this.chartDimension });
     } else {
       this.buildChartWithSingleDataset(field);
     }
@@ -87,19 +96,25 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
       complete: (result) => {
         this.csvFields = result.meta.fields;
         this.csvDataRecords = result.data;
+        const updatedData = {
+          csvFields: this.csvFields,
+          csvDataRecords: this.csvDataRecords
+        };
+        this.setUpdatedChartData(updatedData);
       }
     });
   }
 
   public setChartColor(color: string): void {
-    if (this.chartData.chartValues.chartDataSets[0].hasOwnProperty('label')) {
-      const seriesIndex = this.chartData.chartValues.chartDataSets.findIndex(dataSet => this.selectedChartSeries.label === dataSet.label);
-      this.chartData.chartValues.chartColor[seriesIndex] = { backgroundColor: color };
+    const chartData = Object.assign({}, this.chartData);
+    if (this.chartTypeHasMultiDataset) {
+      const seriesIndex = chartData.chartValues.chartDataSets.findIndex(dataSet => this.selectedChartSeries.label === dataSet.label);
+      chartData.chartValues.chartColor[seriesIndex] = { backgroundColor: color };
     } else {
-      const seriesIndex = this.chartData.chartValues.chartLabels.findIndex(chartLabel => this.selectedChartSeries.label === chartLabel);
-      this.chartData.chartValues.chartColor[0].backgroundColor[seriesIndex] = color;
+      const seriesIndex = chartData.chartValues.chartLabels.findIndex(chartLabel => this.selectedChartSeries.label === chartLabel);
+      chartData.chartValues.chartColor[0].backgroundColor[seriesIndex] = color;
     }
-    this.updatedChartData.emit(this.chartData);
+    this.updatedChartData.emit(chartData);
   }
 
   public setSelectedChartSeries(data: any) {
@@ -116,7 +131,10 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     });
     const chartDataSets = this.getDataCount(this.csvDataRecords, field);
     const chartLabels = [... new Set(chartFields)];
-    this.setUpdatedChartData(chartDataSets, chartLabels);
+    const updatedData = {
+      chartDataSets, chartLabels
+    };
+    this.setUpdatedChartData(updatedData);
   }
 
   private createMultiDatasetsDimension(dataCount: any): Array<any> {
@@ -151,10 +169,6 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     return csvDataset;
   }
 
-  public getSelectedField(field: string): void {
-    this.buildChartDataSet(field);
-  }
-
   private initializeChartSettingsForms(): void {
     this.chartSettingsForm = this.formBuilder.group({
       dataSource: [''],
@@ -178,12 +192,17 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     if (this.chartSettingsForm) {
       this.chartSettingsForm.reset({}, { emitEvent: false });
     }
+    this.selectedField = '';
+    this.selectedDimension = '';
+    this.csvDataRecords = [];
+    this.csvFields = [];
+    this.chartDimension = [];
   }
 
   private setChartValues(data: any): void {
     this.chartValues = [];
     this.chartData = data;
-    this.chartName = data.chartName;
+    this.setChartSettingsValue(data.chartValues);
     setTimeout(() => {
       if (this.chartTypeHasMultiDataset) {
         data.chartValues.chartDataSets.map(dataSets => {
@@ -204,10 +223,17 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setUpdatedChartData(dimension: any, fields: Array<string>): void {
+  private setChartSettingsValue(data: any): void {
+    Object.keys(data).forEach(key => {
+      this[key] = data[key];
+    });
+  }
+
+  private setUpdatedChartData(updatedData: any): void {
     const chartData = Object.assign({}, this.chartData);
-    chartData.chartValues.chartDataSets = dimension;
-    chartData.chartValues.chartLabels = fields;
+    Object.keys(updatedData).forEach(key => {
+      chartData.chartValues[key] = updatedData[key];
+    });
     this.setChartValues(chartData);
     this.updatedChartData.emit(chartData);
   }
@@ -221,10 +247,10 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
       )
       .subscribe(name => {
         this.chartName = name;
-        const chartData = Object.assign({}, this.chartData);
-        chartData.chartName = name;
-        this.setChartValues(chartData);
-        this.updatedChartData.emit(chartData);
+        const updatedData = {
+          chartName: name
+        };
+        this.setUpdatedChartData(updatedData);
       });
   }
 

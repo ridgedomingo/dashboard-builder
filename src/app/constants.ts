@@ -6,6 +6,7 @@ export const BAR_CHART_DEFAULT_VALUES = {
   { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }],
   chartLabels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
   chartLegend: true,
+  chartName: 'Bar',
   chartType: 'bar',
 };
 
@@ -14,6 +15,7 @@ export const DOUGHNUT_CHART_DEFAULT_VALUES = {
   chartDataSets: [300, 500, 100],
   chartLabels: ['Download Sales', 'In Store Sales', 'Mail Sales'],
   chartLegend: true,
+  chartName: 'Donut',
   chartType: 'doughnut',
 };
 
@@ -22,6 +24,7 @@ export const LINE_CHART_DEFAULT_VALUES = {
   chartDataSets: [{ data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' }],
   chartLabels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   chartLegend: true,
+  chartName: 'Line',
   chartType: 'line',
 };
 
@@ -30,29 +33,26 @@ export const PIE_CHART_DEFAULT_VALUES = {
   chartDataSets: [300, 500, 100],
   chartLabels: ['Download Sales', 'In Store Sales', 'Mail Sales'],
   chartLegend: true,
+  chartName: 'Pie',
   chartType: 'pie',
 };
 
 export const CHART_CHOICES = [
   {
     icon: faChartBar,
-    name: 'Bar',
     values: BAR_CHART_DEFAULT_VALUES
   },
   {
     icon: faChartPie,
-    name: 'Pie',
     values: PIE_CHART_DEFAULT_VALUES
   },
   {
     icon: faChartLine,
-    name: 'Line',
     values: LINE_CHART_DEFAULT_VALUES
   },
   {
     class: 'wrap-chart-choice-name',
     icon: faCircleNotch,
-    name: 'Donut',
     values: DOUGHNUT_CHART_DEFAULT_VALUES
   },
 ];
