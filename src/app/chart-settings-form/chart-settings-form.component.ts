@@ -72,7 +72,6 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
     }, {});
     const chartFields = [... new Set(multiDataSetFields)];
     const chartDimension = this.createMultiDatasetsDimension(dataCount);
-    chartFields.sort();
     const updatedData = {
       chartDataSets: chartDimension,
       chartLabels: chartFields
@@ -93,6 +92,7 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
   public getCSVData(data: any): void {
     this.csvParser.parse(data.target.files[0], {
       header: true,
+      skipEmptyLines: true,
       complete: (result) => {
         this.csvFields = result.meta.fields;
         this.csvDataRecords = result.data;
@@ -177,10 +177,6 @@ export class ChartSettingsFormComponent implements OnInit, OnDestroy {
       name: ['']
     });
     this.subscribeToNameControlValueChanges();
-
-    // this.chartStyleForm = this.formBuilder.group({
-
-    // })
   }
 
   private resetToDefaultPageValues(): void {

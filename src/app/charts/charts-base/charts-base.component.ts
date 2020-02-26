@@ -48,8 +48,9 @@ export class ChartsBaseComponent implements OnInit {
     private setChartValues(values: any): void {
         const scales = {
             yAxes: [
-                { ticks: { beginAtZero: true } }
-            ]
+                {
+                    ticks: { beginAtZero: true },
+                }],
         };
         this.chartColor = values.chartColor;
         this.chartData = values.chartDataSets;

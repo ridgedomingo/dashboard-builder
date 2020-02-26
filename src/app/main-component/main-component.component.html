@@ -9,7 +9,7 @@
                 class="chart-choices-container row">
                 <div *ngFor="let chart of chartChoices" (click)="addChart(chart)"
                     [ngClass]="showMinifiedChartChoicesContainer ? 'col-lg-3 col-md-4' : 'col-lg-4 col-md-6' " class="chart-choices"
-                    [isDisabled]="!showMinifiedChartChoicesContainer" placement="left" [tooltip]="chart.values.name">
+                    [isDisabled]="!showMinifiedChartChoicesContainer" placement="left" [tooltip]="chart.values.chartName">
                     <fa-icon [icon]="chart.icon" size="2x"></fa-icon>
                     <p *ngIf="!showMinifiedChartChoicesContainer"> {{ chart.values.chartType | titlecase}} </p>
                 </div>

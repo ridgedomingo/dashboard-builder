@@ -29,16 +29,18 @@
         </div>
         <ng-container *ngIf="csvFields.length > 0">
             <div class="row">
-                <label for="data-source">Field:</label>
+                <label for="data-source">Field(x-axis):</label>
                 <div class="input-group input-group-sm col-md-12">
-                    <app-autocomplete #autoComplete [autoCompleteItems]="csvFields" [currentValue]="selectedField" (selectedValue)="buildChartDataSet($event)">
+                    <app-autocomplete #autoComplete [autoCompleteItems]="csvFields" [currentValue]="selectedField"
+                        (selectedValue)="buildChartDataSet($event)">
                     </app-autocomplete>
                 </div>
             </div>
             <div *ngIf="chartTypeHasMultiDataset" class="row">
-                <label for="data-source">Dimension:</label>
+                <label for="data-source">Dimension(y-axis):</label>
                 <div class="input-group input-group-sm col-md-12">
-                    <app-autocomplete #autoComplete [autoCompleteItems]="chartDimension" [currentValue]="selectedDimension" (selectedValue)="buildChartWithMultiDataset($event)">
+                    <app-autocomplete #autoComplete [autoCompleteItems]="chartDimension"
+                        [currentValue]="selectedDimension" (selectedValue)="buildChartWithMultiDataset($event)">
                     </app-autocomplete>
                 </div>
             </div>

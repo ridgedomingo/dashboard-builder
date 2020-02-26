@@ -1,4 +1,7 @@
-import { faArrowCircleDown, faArrowCircleUp, faChartBar, faChartPie, faChartLine, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowCircleDown, faArrowCircleUp, faChartBar, faChartPie, faChartLine,
+  faCircleNotch, faFillDrip
+} from '@fortawesome/free-solid-svg-icons';
 
 export const BAR_CHART_DEFAULT_VALUES = {
   chartColor: [{ backgroundColor: '#87c6f3' }, { backgroundColor: '#ffa1b5' }],
@@ -57,8 +60,8 @@ export const CHART_CHOICES = [
   },
 ];
 
-export const CHART_HAS_SINGLE_DATASET = ['doughtnut', 'pie'];
-export const CHART_HAS_MULTI_DATASET = ['bar', 'line'];
-
 export const ARROW_DOWN_ICON = faArrowCircleDown;
 export const ARROW_UP_ICON = faArrowCircleUp;
+
+export const CHART_HAS_SINGLE_DATASET = ['doughtnut', 'pie'];
+export const CHART_HAS_MULTI_DATASET = ['bar', 'line'];
